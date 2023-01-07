@@ -74,7 +74,6 @@ export default function BuildPage() {
             return;
         }
         setWalletAddress(address);
-        setLoadingPage({...loadingPage, home: false});
     };
 
     useEffect(() => {
@@ -88,6 +87,7 @@ export default function BuildPage() {
                 router.push('/');
             }
             setUserToken(await getUserTokens(walletAddress));
+            setLoadingPage({...loadingPage, home: false});
         }
     };
 
