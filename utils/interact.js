@@ -102,6 +102,7 @@ export const getUserTokens = async (wallectAddress) => {
         contractAddresses : [contractAddress]
     });
 
+    console.log(await getBalanceToken(wallectAddress));
     console.log(result);
 
     for (let index = 0; index < result.totalCount; index++) {
