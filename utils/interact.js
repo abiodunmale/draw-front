@@ -102,9 +102,6 @@ export const getUserTokens = async (wallectAddress) => {
         contractAddresses : [contractAddress]
     });
 
-    console.log(await getBalanceToken(wallectAddress));
-    console.log(result);
-
     for (let index = 0; index < result.totalCount; index++) {
         let justRefresh = await axios.get(`https://eth-goerli.g.alchemy.com/nft/v2/CH1V81ZMzVXNjIFWnRNNTTgY0nD_Twh6/getNFTMetadata?contractAddress=0x7F5683E7d88FEFaad727D38408b863811e128B1b&tokenId=${result.ownedNfts[index]?.tokenId}&tokenType=ERC721&refreshCache=true`).catch(function (error) {
             console.log(error.toJSON());

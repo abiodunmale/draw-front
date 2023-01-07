@@ -151,7 +151,7 @@ export default function BuildPage() {
 
         let { success, status } = await confirmReveal(walletAddress);
         if(success){
-            await axios.post("https://ceaf-102-89-22-42.eu.ngrok.io/nft/generate", data)
+            await axios.post("https://904a-102-88-34-169.eu.ngrok.io/nft/generate", data)
             .then(function (result) {
                 // console.log(result.data);
                 toast.success(`Nft ${tokenId} succesfully revealed!!!`);
@@ -185,7 +185,7 @@ export default function BuildPage() {
     };
 
     const aTokenPressed = async (tokenId) => {
-        let metadata = await axios.get(`https://ceaf-102-89-22-42.eu.ngrok.io/nft/metadata/${tokenId}`).catch(function (error) {
+        let metadata = await axios.get(`https://904a-102-88-34-169.eu.ngrok.io/nft/metadata/${tokenId}`).catch(function (error) {
             console.log(error.toJSON());
             setTokenId(tokenId);
             setLoadingPage({...loadingPage, nft: false})
