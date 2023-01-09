@@ -50,7 +50,7 @@ export default function BuildPage() {
     
     const addLayer = async (traitType,val) => {
         const img = await canvas.loadImage(`/layers/${traitType}/${val}.png`);
-        console.log("addLayer", traitType, val, img);
+        // console.log("addLayer", traitType, val, img);
         ctx.drawImage(img,0,0,imageSize.width,imageSize.height);
         setBgUrl(blankCanvas.toDataURL("image/png"));
     };
@@ -122,7 +122,7 @@ export default function BuildPage() {
     };
 
     const prevStage = (newStep) => {
-        console.log(newStep, doP.length);
+        // console.log(newStep, doP.length);
         let layerName = trimLayerName(doP[newStep][0]).toUpperCase();
         setCurrentLayer(layerName);
         setCurrent(doP[newStep]);
@@ -132,7 +132,7 @@ export default function BuildPage() {
     const finishStage = async () => {
         // alert("coming soon");
 
-        console.log(selectedTraits);
+        // console.log(selectedTraits);
         setDisabledBtn(true);
 
         const data = {
@@ -151,14 +151,16 @@ export default function BuildPage() {
 
         let { success, status } = await confirmReveal(walletAddress);
         if(success){
-            await axios.post("https://904a-102-88-34-169.eu.ngrok.io/nft/generate", data)
+            const toastOne = toast.loading(`Processing your nft...`);
+            await axios.post("https://api-nft.onrender.com/nft/generate", data)
             .then(function (result) {
-                // console.log(result.data);
+                toast.dismiss(toastOne);
                 toast.success(`Nft ${tokenId} succesfully revealed!!!`);
+                cancelReveal();
                 setLoadingPage({...loadingPage, nft: true})
             })
             .catch(function (error) {
-                // console.log(error.response?.data);
+                toast.dismiss(toastOne);
                 toast.error("An error occured, cannot reveal nft");
             });
         }
@@ -185,10 +187,11 @@ export default function BuildPage() {
     };
 
     const aTokenPressed = async (tokenId) => {
-        let metadata = await axios.get(`https://904a-102-88-34-169.eu.ngrok.io/nft/metadata/${tokenId}`).catch(function (error) {
-            console.log(error.toJSON());
-            setTokenId(tokenId);
-            setLoadingPage({...loadingPage, nft: false})
+        let metadata = await axios.get(`https://api-nft.onrender.com/nft/metadata/${tokenId}`).catch(function (error) {
+            if(error.response.status == 404){
+                setTokenId(tokenId);
+                setLoadingPage({...loadingPage, nft: false})
+            }
         });
 
         if(metadata){
