@@ -108,7 +108,7 @@ export default function BuildPage() {
     };
 
     const nextStage = async (newStep) => {
-        console.log(newStep, doP.length);
+        // console.log(newStep, doP.length);
         if(newStep < doP.length){
             let layerName = trimLayerName(doP[newStep][0]).toUpperCase();
             setCurrentLayer(layerName);
@@ -117,7 +117,7 @@ export default function BuildPage() {
         }
 
         if(newStep === doP.length){
-            console.log("~~~ done selecting ~~~");
+            // console.log("~~~ done selecting ~~~");
             setFinal(true);
         }
     };
@@ -180,7 +180,7 @@ export default function BuildPage() {
     };
 
     const trimLayerName = (name) => {
-        return name.substring(0, name.indexOf("/"))
+        return name.substring(0, name.indexOf("/"));
     }
 
     const trimFileName = (name) => {
