@@ -105,9 +105,9 @@ export const getUserTokens = async (wallectAddress) => {
     console.log(result);
 
     for (let index = 0; index < result.totalCount; index++) {
-        let justRefresh = await axios.get(`https://eth-goerli.g.alchemy.com/nft/v2/CH1V81ZMzVXNjIFWnRNNTTgY0nD_Twh6/getNFTMetadata?contractAddress=${contractAddress}&tokenId=${result.ownedNfts[index]?.tokenId}&tokenType=ERC721&refreshCache=true`).catch(function (error) {
-            console.log(error.toJSON());
-        });
+        // let justRefresh = await axios.get(`https://eth-goerli.g.alchemy.com/nft/v2/CH1V81ZMzVXNjIFWnRNNTTgY0nD_Twh6/getNFTMetadata?contractAddress=${contractAddress}&tokenId=${result.ownedNfts[index]?.tokenId}&tokenType=ERC721&refreshCache=true`).catch(function (error) {
+        //     console.log(error.toJSON());
+        // });
         let tokenId = result.ownedNfts[index]?.tokenId;
         let rawImg = result.ownedNfts[index]?.rawMetadata.image;
         var name = result.ownedNfts[index]?.rawMetadata.name;

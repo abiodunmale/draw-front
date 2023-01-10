@@ -83,8 +83,9 @@ export default function BuildPage() {
     const getUserData = async () => {
         if(walletAddress.length > 0){
             const bal = Number(await getBalanceToken(walletAddress));
-            if(bal < 0) {
+            if(bal === 0) {
                 router.push('/');
+                toast.error("You do not have any token to build!!");
             }
             setUserToken(await getUserTokens(walletAddress));
             setLoadingPage({...loadingPage, home: false});
@@ -156,7 +157,7 @@ export default function BuildPage() {
             .then(function (result) {
                 toast.dismiss(toastOne);
                 toast.success(`Nft ${tokenId} succesfully revealed!!!`);
-                cancelReveal();
+                cancelReveal();  
                 setLoadingPage({...loadingPage, nft: true})
             })
             .catch(function (error) {
