@@ -37,15 +37,17 @@ export default function BuildPage() {
     const trimFileName = (name) => name.split("/").pop().replace(/\.[^/.]+$/, "");
 
     let selectedBackground = background[Math.floor(Math.random()*background.length)];
-    let preloadedLayers = {layer: 'Background', trait: trimFileName(selectedBackground), order: 0}
+    let selectedBody = body[Math.floor(Math.random()*body.length)];
+    let preloadedBackground = {layer: 'Background', trait: trimFileName(selectedBackground), order: 0};
+    let preloadedBody = {layer: 'Body', trait: trimFileName(selectedBody), order: 1};
 
 
     const [step, setStep] = useState(0);
-    const [doP, setDoP] = useState([body, body_piece, bracer, eyes, headpiece, arm_Ring, necklace, rune, tattoos]);
+    const [doP, setDoP] = useState([body_piece, bracer, eyes, headpiece, arm_Ring, necklace, rune, tattoos]);
     const [current, setCurrent] = useState(doP[step]);
     const [bgUrl, setBgUrl] = useState("/Placeholder.png");
-    const [selectedTraits, setSelectedTraits] = useState([preloadedLayers]);
-    const [currentLayer, setCurrentLayer] = useState('BODY');
+    const [selectedTraits, setSelectedTraits] = useState([preloadedBackground, preloadedBody]);
+    const [currentLayer, setCurrentLayer] = useState('BODY PIECE');
     const [tokenId, setTokenId] = useState(4);
     const [final, setFinal] = useState(false);
     const [walletAddress, setWalletAddress] = useState("");
@@ -63,6 +65,7 @@ export default function BuildPage() {
 
     const generateCanvas = async () => {
         setAddTrait(true);
+        console.log(selectedTraits);
         selectedTraits.sort((a, b) => a.order - b.order);
         for (let index = 0; index < selectedTraits.length; index++) {
             await addLayer(selectedTraits[index].layer,selectedTraits[index].trait);
@@ -108,9 +111,9 @@ export default function BuildPage() {
         let layerName = trimLayerName(item);
         let traitName = trimFileName(item);
         if(selectedTraits.map(x => x.layer).includes(layerName)){
-            setSelectedTraits([...selectedTraits.filter(item => item.layer !== layerName), {layer: layerName, trait: traitName, order: (step + 1)}]);
+            setSelectedTraits([...selectedTraits.filter(item => item.layer !== layerName), {layer: layerName, trait: traitName, order: (step + 2)}]);
         }else{
-            setSelectedTraits([...selectedTraits, {layer: layerName, trait: traitName, order: (step + 1)}]);
+            setSelectedTraits([...selectedTraits, {layer: layerName, trait: traitName, order: (step + 2)}]);
         }
         // await new Promise(r => setTimeout(r, 2000));
     };
@@ -179,9 +182,9 @@ export default function BuildPage() {
     };
 
     const cancelReveal = async () => {
-        setSelectedTraits([preloadedLayers]);
+        setSelectedTraits([preloadedBackground, preloadedBody]);
         setStep(0);
-        setCurrentLayer('BODY');
+        setCurrentLayer('BODY PIECE');
         setCurrent(doP[0]);
         setBgUrl("/Placeholder.png");
         setFinal(false);
