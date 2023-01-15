@@ -34,13 +34,18 @@ export default function BuildPage() {
     const rune = ['Rune/Energy', 'Rune/Health', 'Rune/Protection', 'Rune/Luck'];
     const tattoos = ['Tattoos/Ancient Markings', 'Tattoos/Sacred Markings', 'Tattoos/Snake', 'Tattoos/Nature'];
     
+    const trimFileName = (name) => name.split("/").pop().replace(/\.[^/.]+$/, "");
+
+    let selectedBackground = background[Math.floor(Math.random()*background.length)];
+    let preloadedLayers = {layer: 'Background', trait: trimFileName(selectedBackground), order: 0}
+
 
     const [step, setStep] = useState(0);
-    const [doP, setDoP] = useState([background, body, body_piece, bracer, eyes, headpiece, arm_Ring, necklace, rune, tattoos]);
+    const [doP, setDoP] = useState([body, body_piece, bracer, eyes, headpiece, arm_Ring, necklace, rune, tattoos]);
     const [current, setCurrent] = useState(doP[step]);
     const [bgUrl, setBgUrl] = useState("/Placeholder.png");
-    const [selectedTraits, setSelectedTraits] = useState([]);
-    const [currentLayer, setCurrentLayer] = useState('BACKGROUND');
+    const [selectedTraits, setSelectedTraits] = useState([preloadedLayers]);
+    const [currentLayer, setCurrentLayer] = useState('BODY');
     const [tokenId, setTokenId] = useState(4);
     const [final, setFinal] = useState(false);
     const [walletAddress, setWalletAddress] = useState("");
@@ -103,9 +108,9 @@ export default function BuildPage() {
         let layerName = trimLayerName(item);
         let traitName = trimFileName(item);
         if(selectedTraits.map(x => x.layer).includes(layerName)){
-            setSelectedTraits([...selectedTraits.filter(item => item.layer !== layerName), {layer: layerName, trait: traitName, order: step}]);
+            setSelectedTraits([...selectedTraits.filter(item => item.layer !== layerName), {layer: layerName, trait: traitName, order: (step + 1)}]);
         }else{
-            setSelectedTraits([...selectedTraits, {layer: layerName, trait: traitName, order: step}]);
+            setSelectedTraits([...selectedTraits, {layer: layerName, trait: traitName, order: (step + 1)}]);
         }
         // await new Promise(r => setTimeout(r, 2000));
     };
@@ -174,9 +179,9 @@ export default function BuildPage() {
     };
 
     const cancelReveal = async () => {
-        setSelectedTraits([]);
+        setSelectedTraits([preloadedLayers]);
         setStep(0);
-        setCurrentLayer('BACKGROUND');
+        setCurrentLayer('BODY');
         setCurrent(doP[0]);
         setBgUrl("/Placeholder.png");
         setFinal(false);
@@ -187,9 +192,7 @@ export default function BuildPage() {
         return name.substring(0, name.indexOf("/"));
     }
 
-    const trimFileName = (name) => {
-        return name.split("/").pop().replace(/\.[^/.]+$/, "");
-    };
+    
 
     const aTokenPressed = async (tokenId) => {
         let metadata = await axios.get(`https://api-nft.onrender.com/nft/metadata/${tokenId}`).catch(function (error) {
