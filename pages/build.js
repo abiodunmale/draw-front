@@ -164,7 +164,7 @@ export default function BuildPage() {
         let { success, status } = await confirmReveal(walletAddress);
         if(success){
             const toastOne = toast.loading(`Processing your nft...`);
-            await axios.post("http://localhost:5000/nft/generate", data)
+            await axios.post("https://api-nft-nvve.onrender.com/nft/generate", data)
             .then(async function (result) {
                 toast.dismiss(toastOne);
                 toast.success(`Nft ${tokenId} succesfully revealed!!!`);
@@ -198,7 +198,7 @@ export default function BuildPage() {
     
 
     const aTokenPressed = async (tokenId) => {
-        let metadata = await axios.get(`http://localhost:5000/nft/metadata/${tokenId}`).catch(function (error) {
+        let metadata = await axios.get(`https://api-nft-nvve.onrender.com/nft/metadata/${tokenId}`).catch(function (error) {
             if(error.response.status == 404){
                 setTokenId(tokenId);
                 setLoadingPage({...loadingPage, nft: false})
@@ -264,7 +264,7 @@ export default function BuildPage() {
                             <img className='rounded mt-5' width={512} height={512} src={bgUrl} />
                         </div>
                     </div>
-                    <div className="flex-1 w-64 mt-20 p-10 rounded-md items-center justify-center">
+                    <div className="flex-1 w-64 mt-[-50px] p-10 rounded-md items-center justify-center">
 
                         {!final ? 
                             <>
@@ -284,6 +284,7 @@ export default function BuildPage() {
                                                 onClick={() => aCardPressed(item)} 
                                                 className={`${(selectedTraits.some(data => data.trait == trimFileName(item))) ? 'ring-2 ring-indigo-500' : ''} p-4 rounded-xl border border-gray-700 cursor-pointer`}>
                                                 <span className='text-white'>{trimFileName(item)}</span>
+                                                <img className='rounded mt-5' width={312} height={312} src={`/layers/${item}.png`} />
                                             </div>
                                         )
                                     })}
@@ -305,7 +306,7 @@ export default function BuildPage() {
                             <>
                                 <div className='justify-center text-center'>
                                     <p className="text-3xl font-bold text-gray-100">Token {tokenId}</p>
-                                    <p className="text-3xl font-bold text-gray-100">Changes cannot be undone.</p>
+                                    {/* <p className="text-3xl font-bold text-gray-100">Changes cannot be undone.</p> */}
                                     <p className="text-3xl font-bold text-gray-100">Sign message to confirm reveal of your NFT.</p>
                                     <button 
                                         onClick={ () => finishStage()}
