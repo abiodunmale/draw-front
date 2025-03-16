@@ -101,11 +101,14 @@ export const getUserTokens = async (wallectAddress) => {
     const result = await alchemy.nft.getNftsForOwner(wallectAddress, {
         contractAddresses : [contractAddress]
     });
+    let lastTokenId = result.ownedNfts[result.totalCount - 1]?.tokenId;
+    let response = await alchemy.nft.refreshNftMetadata(contractAddress, lastTokenId);
+    console.log(response);
 
     console.log(result);
 
     for (let index = 0; index < result.totalCount; index++) {
-        // let justRefresh = await axios.get(`https://eth-goerli.g.alchemy.com/nft/v2/CH1V81ZMzVXNjIFWnRNNTTgY0nD_Twh6/getNFTMetadata?contractAddress=${contractAddress}&tokenId=${result.ownedNfts[index]?.tokenId}&tokenType=ERC721&refreshCache=true`).catch(function (error) {
+        // await axios.get(`https://eth-goerli.g.alchemy.com/nft/v2/CH1V81ZMzVXNjIFWnRNNTTgY0nD_Twh6/getNFTMetadata?contractAddress=${contractAddress}&tokenId=${result.ownedNfts[index]?.tokenId}&tokenType=ERC721&refreshCache=true`).catch(function (error) {
         //     console.log(error.toJSON());
         // });
         let tokenId = result.ownedNfts[index]?.tokenId;
