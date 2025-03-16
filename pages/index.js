@@ -20,7 +20,7 @@ export default function Home() {
   const [mintAmount, setMintAmount] = useState(1);
   const [minting, setMinting] = useState(false);
   const [publicCost, setPublicCost] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const addWalletListener = () => {
     if (window.ethereum) {
@@ -56,6 +56,7 @@ export default function Home() {
     setLoading(true);
     const { success, status, address } = await getCurrentWalletConnected();
     setWalletAddress(address);
+    // console.log("cost", await getPublicCost());
     setPublicCost(await getPublicCost());
     setLoading(false);
   };

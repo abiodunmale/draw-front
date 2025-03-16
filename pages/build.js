@@ -164,7 +164,7 @@ export default function BuildPage() {
         let { success, status } = await confirmReveal(walletAddress);
         if(success){
             const toastOne = toast.loading(`Processing your nft...`);
-            await axios.post("https://api-nft.onrender.com/nft/generate", data)
+            await axios.post("http://localhost:5000/nft/generate", data)
             .then(async function (result) {
                 toast.dismiss(toastOne);
                 toast.success(`Nft ${tokenId} succesfully revealed!!!`);
@@ -198,7 +198,7 @@ export default function BuildPage() {
     
 
     const aTokenPressed = async (tokenId) => {
-        let metadata = await axios.get(`https://api-nft.onrender.com/nft/metadata/${tokenId}`).catch(function (error) {
+        let metadata = await axios.get(`http://localhost:5000/nft/metadata/${tokenId}`).catch(function (error) {
             if(error.response.status == 404){
                 setTokenId(tokenId);
                 setLoadingPage({...loadingPage, nft: false})

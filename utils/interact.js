@@ -1,15 +1,15 @@
 import { Network, Alchemy } from "alchemy-sdk";
 import axios from 'axios';
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const web3 = createAlchemyWeb3("https://eth-goerli.g.alchemy.com/v2/CH1V81ZMzVXNjIFWnRNNTTgY0nD_Twh6");
+const web3 = createAlchemyWeb3("https://eth-sepolia.g.alchemy.com/v2/NOJq8pxdrCeoKdvyJu4CdnO-d6H6L8C5");
 
 const alchemy = new Alchemy({
-    apiKey: "CH1V81ZMzVXNjIFWnRNNTTgY0nD_Twh6",
-    network: Network.ETH_GOERLI
+    apiKey: "NOJq8pxdrCeoKdvyJu4CdnO-d6H6L8C5",
+    network: Network.ETH_SEPOLIA
 });
 
 const contractAbi = require('./abi.json');
-const contractAddress = "0xc9A4f0a002F00cf6ab3c1AD9767067731C4C374d";
+const contractAddress = "0x70f2D1bbBFc5B5853Bbc96380e185988DeAd4dC8";
 
 const nftContract = new web3.eth.Contract(contractAbi, contractAddress);
 
@@ -23,10 +23,10 @@ export const connectWallet = async () => {
 
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
-            if(chainId != "0x5"){
+            if(chainId != "0xaa36a7"){
                 await window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x5' }],
+                    params: [{ chainId: '0xaa36a7' }],
                 });
             }
             
@@ -122,7 +122,7 @@ export const getUserTokens = async (wallectAddress) => {
 };
 
 const getPublicCost = async () => {
-    const result = await nftContract.methods.publicSalePrice().call();
+    const result = await nftContract.methods.mintPrice().call();
     const resultEther = web3.utils.fromWei(result, "ether");
     return resultEther;
 };
